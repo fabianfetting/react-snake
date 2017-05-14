@@ -24,8 +24,8 @@ class Playground extends Component {
 
 Playground.defaultProps = {
     scale: 20,
-    width: 25 * 20,
-    height: 25 * 20,
+    width: 15 * 20,
+    height: 15 * 20,
 };
 
 export default Playground;

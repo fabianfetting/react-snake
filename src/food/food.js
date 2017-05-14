@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import './food.css';
 
 class Food extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const style = {
         width: this.props.scale,

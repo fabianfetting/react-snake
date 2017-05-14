@@ -8,7 +8,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            foodPosition: { x: 0, y: 0 },
+            foodPosition: { x: 0, y: 1 },
         };
     }
 
@@ -51,11 +51,15 @@ class App extends Component {
         this.dropFood();
     }
 
+    onEat() {
+        this.dropFood();
+    }
+
     render() {
         return (
             <div ref="app" className="app" onKeyDown={e => this.handleKeyPress(e)} tabIndex="0">
                 <Playground ref="playground">
-                    <Snake ref="snake" />
+                    <Snake ref="snake" onEat={() => this.onEat()} foodPosition={this.state.foodPosition} />
                     <Food ref="food" x={this.state.foodPosition.x} y={this.state.foodPosition.y} />
                 </Playground>
             </div>

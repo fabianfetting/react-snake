@@ -66,8 +66,10 @@ class Snake extends Component {
     move() {
         const [directionX, directionY] = this.state.direction;
         const { x, y } = this.state.head;
+        let speed = this.state.speed;
+        let timerId = this.state.timerId;
 
-        const tail = [this.state.head, ...this.state.tail];
+        let tail = [this.state.head, ...this.state.tail];
         tail.splice(tail.length - 1, 1);
 
         let newX = x + directionX * this.props.scale;
@@ -79,6 +81,14 @@ class Snake extends Component {
         newY = newY > this.state.border.bottom - this.props.scale ? this.state.border.top : newY;
         newY = newY < this.state.border.top ? this.state.border.bottom - this.props.scale : newY;
 
+        if (this.isFoodPosition(newX, newY)) {
+            tail = [{ x: newX, y: newY }, ...tail];
+            speed /= 1.1;
+            this.props.onEat();
+            console.log('SPEED', speed);
+            timerId = this.refreshTimer(speed, timerId);
+        }
+
         this.setState({
             allowedDirections: allowedDirections[this.state.direction],
             head: {
@@ -86,11 +96,18 @@ class Snake extends Component {
                 y: newY,
             },
             tail,
+            speed,
+            timerId,
         });
     }
 
-    eat() {
-        
+    refreshTimer(speed, timerId) {
+        clearInterval(timerId);
+        return setInterval(() => this.move(), speed);
+    }
+
+    isFoodPosition(x, y) {
+        return this.props.foodPosition.x === x && this.props.foodPosition.y === y;
     }
 
     shouldComponentUpdate(nextProps, nextState) {
