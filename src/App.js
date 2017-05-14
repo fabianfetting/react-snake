@@ -6,9 +6,11 @@ import Food from './food/food';
 
 class App extends Component {
     handleKeyPress(event) {
-        console.log('key:', event.key);
-
         const keyHandler = {
+            w: () => this.refs.snake.moveUp(),
+            a: () => this.refs.snake.moveLeft(),
+            s: () => this.refs.snake.moveDown(),
+            d: () => this.refs.snake.moveRight(),
             ArrowUp: () => this.refs.snake.moveUp(),
             ArrowDown: () => this.refs.snake.moveDown(),
             ArrowLeft: () => this.refs.snake.moveLeft(),

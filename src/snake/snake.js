@@ -4,17 +4,25 @@ import SnakeHead from './snake-head';
 import './snake.css';
 import * as direction from '../constants/direction';
 
+const ALLOWED_DIRECTIONS = {
+    [direction.UP]: [direction.UP, direction.LEFT, direction.RIGHT],
+    [direction.DOWN]: [direction.DOWN, direction.LEFT, direction.RIGHT],
+    [direction.LEFT]: [direction.UP, direction.DOWN, direction.LEFT],
+    [direction.RIGHT]: [direction.UP, direction.DOWN, direction.RIGHT],
+}
+
 class Snake extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            allowedDirections: ALLOWED_DIRECTIONS[direction.RIGHT],
             head: {
                 x: this.props.scale * 2,
                 y: this.props.scale * 0,
             },
-            speed: 1000 / 2,
-            direction: direction.DOWN,
+            speed: 1000 / 3,
+            direction: direction.RIGHT,
             tail: [{ x: this.props.scale * 1, y: 0 }, { x: this.props.scale * 0, y: 0 }],
         };
     }
@@ -34,19 +42,31 @@ class Snake extends Component {
     }
 
     moveUp() {
-        this.setState({ direction: direction.UP });
+        if (this.isMoveAllowed(direction.UP)) {
+            this.setState({ direction: direction.UP });
+        }
     }
 
     moveDown() {
-        this.setState({ direction: direction.DOWN });
+        if (this.isMoveAllowed(direction.DOWN)) {
+            this.setState({ direction: direction.DOWN });
+        }
     }
 
     moveLeft() {
-        this.setState({ direction: direction.LEFT });
+        if (this.isMoveAllowed(direction.LEFT)) {
+            this.setState({ direction: direction.LEFT });
+        }
     }
 
     moveRight() {
-        this.setState({ direction: direction.RIGHT });
+        if (this.isMoveAllowed(direction.RIGHT)) {
+            this.setState({ direction: direction.RIGHT });
+        }
+    }
+
+    isMoveAllowed(wantedDirection) {
+        return this.state.allowedDirections.indexOf(wantedDirection) >= 0;
     }
 
     move() {
@@ -66,12 +86,17 @@ class Snake extends Component {
         newY = newY < this.state.border.top ? this.state.border.bottom - this.props.scale : newY;
 
         this.setState({
+            allowedDirections: ALLOWED_DIRECTIONS[this.state.direction],
             head: {
                 x: newX,
                 y: newY,
             },
             tail,
         });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextState.head !== this.state.head;
     }
 
     render() {
