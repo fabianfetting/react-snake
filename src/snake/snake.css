@@ -1,0 +1,11 @@
+.snake-link {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: darkgray;
+}
+.snake-link.snake-head {
+    background-color: #30dc30;
+}
