@@ -5,6 +5,13 @@ import Playground from './playground/playground';
 import Food from './food/food';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            foodPosition: { x: 0, y: 0 },
+        };
+    }
+
     handleKeyPress(event) {
         const keyHandler = {
             w: () => this.refs.snake.moveUp(),
@@ -20,19 +27,36 @@ class App extends Component {
         if (keyHandler[event.key]) {
             keyHandler[event.key]();
         }
+    }
 
+    randomPosition() {
+        const { scale, height, width } = this.refs.playground.props;
+        const maxX = (width - scale) / scale;
+        const maxY = (height - scale) / scale;
+        return {
+            x: Math.floor(Math.random() * (maxX + 1)) * scale,
+            y: Math.floor(Math.random() * (maxY + 1)) * scale,
+        };
+    }
+
+    dropFood() {
+        const foodPosition = this.randomPosition();
+        this.setState({
+            foodPosition,
+        });
     }
 
     componentDidMount() {
         this.refs.app.focus();
+        this.dropFood();
     }
 
     render() {
         return (
-            <div ref="app" className="app" onKeyDown={(e) => this.handleKeyPress(e)} tabIndex="0">
-                <Playground>
+            <div ref="app" className="app" onKeyDown={e => this.handleKeyPress(e)} tabIndex="0">
+                <Playground ref="playground">
                     <Snake ref="snake" />
-                    <Food ref="food" />
+                    <Food ref="food" x={this.state.foodPosition.x} y={this.state.foodPosition.y} />
                 </Playground>
             </div>
         );
