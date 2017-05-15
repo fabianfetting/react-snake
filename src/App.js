@@ -55,11 +55,20 @@ class App extends Component {
         this.dropFood();
     }
 
+    onDead() {
+        console.log('GAME OVER!');
+    }
+
     render() {
         return (
             <div ref="app" className="app" onKeyDown={e => this.handleKeyPress(e)} tabIndex="0">
                 <Playground ref="playground">
-                    <Snake ref="snake" onEat={() => this.onEat()} foodPosition={this.state.foodPosition} />
+                    <Snake
+                        ref="snake"
+                        onEat={() => this.onEat()}
+                        onDead={() => this.onDead()}
+                        foodPosition={this.state.foodPosition}
+                    />
                     <Food ref="food" x={this.state.foodPosition.x} y={this.state.foodPosition.y} />
                 </Playground>
             </div>

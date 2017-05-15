@@ -81,11 +81,19 @@ class Snake extends Component {
         newY = newY > this.state.border.bottom - this.props.scale ? this.state.border.top : newY;
         newY = newY < this.state.border.top ? this.state.border.bottom - this.props.scale : newY;
 
+        if (this.isOwnPosition(newX, newY)) {
+            this.props.onDead();
+            this.clearTimer();
+            this.setState({
+                speed: 0,
+            })
+            return;
+        }
+
         if (this.isFoodPosition(newX, newY)) {
             tail = [{ x: newX, y: newY }, ...tail];
             speed /= 1.1;
             this.props.onEat();
-            console.log('SPEED', speed);
             timerId = this.refreshTimer(speed, timerId);
         }
 
@@ -101,9 +109,18 @@ class Snake extends Component {
         });
     }
 
+    isOwnPosition(newX, newY) {
+        let body = [this.state.head, ...this.state.tail];
+        return !!body.find(link => link.x === newX && link.y === newY);
+    }
+
     refreshTimer(speed, timerId) {
-        clearInterval(timerId);
+        this.clearTimer();
         return setInterval(() => this.move(), speed);
+    }
+
+    clearTimer() {
+        clearInterval(this.state.timerId);
     }
 
     isFoodPosition(x, y) {
@@ -124,7 +141,7 @@ class Snake extends Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this.state.timerId);
+        this.clearTimer();
     }
 }
 

@@ -5,7 +5,9 @@
     left: 0px;
     top: 0px;
     background: darkgray;
+    z-index: 1;
 }
 .snake-link.snake-head {
     background-color: #30dc30;
+    z-index: 2;
 }
