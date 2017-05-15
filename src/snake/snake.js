@@ -5,11 +5,16 @@ import './snake.css';
 import * as direction from '../constants/direction';
 import allowedDirections from '../constants/allowed-directions';
 
+
 class Snake extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.state = this.getInitialState();
+    }
+
+    getInitialState() {
+        return {
             allowedDirections: allowedDirections[direction.RIGHT],
             head: {
                 x: this.props.scale * 2,
@@ -22,10 +27,9 @@ class Snake extends Component {
     }
 
     componentDidMount() {
-        const timerId = setInterval(() => this.move(), this.state.speed);
-
+        const timerId = this.initTimer(this.state.speed);
         this.setState({
-            timerId: timerId,
+            timerId,
             border: {
                 top: this.refs.snake.parentNode.clientTop,
                 bottom: this.refs.snake.parentNode.clientTop + this.refs.snake.parentNode.clientHeight,
@@ -33,6 +37,10 @@ class Snake extends Component {
                 right: this.refs.snake.parentNode.clientLeft + this.refs.snake.parentNode.clientWidth,
             },
         });
+    }
+
+    initTimer(speed) {
+        return setInterval(() => this.move(), speed);
     }
 
     moveUp() {
@@ -82,11 +90,12 @@ class Snake extends Component {
         newY = newY < this.state.border.top ? this.state.border.bottom - this.props.scale : newY;
 
         if (this.isOwnPosition(newX, newY)) {
-            this.props.onDead();
             this.clearTimer();
             this.setState({
                 speed: 0,
+                timerId: null,
             })
+            this.props.onDead();
             return;
         }
 
@@ -112,6 +121,13 @@ class Snake extends Component {
     isOwnPosition(newX, newY) {
         let body = [this.state.head, ...this.state.tail];
         return !!body.find(link => link.x === newX && link.y === newY);
+    }
+
+    reset() {
+        const state = this.getInitialState();
+        state.timerId = this.initTimer(state.speed);
+
+        this.setState(state);
     }
 
     refreshTimer(speed, timerId) {

@@ -57,6 +57,11 @@ class App extends Component {
 
     onDead() {
         console.log('GAME OVER!');
+
+        setTimeout(() => {
+            this.dropFood();
+            this.refs.snake.reset();
+        }, 3000);
     }
 
     render() {
