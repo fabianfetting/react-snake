@@ -3,12 +3,15 @@ import './app.css';
 import Snake from './snake/snake';
 import Playground from './playground/playground';
 import Food from './food/food';
+import GameOver from './game-over';
+import StartButton from './start-button';
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             foodPosition: { x: 0, y: 1 },
+            isGameOver: false,
         };
     }
 
@@ -56,18 +59,34 @@ class App extends Component {
     }
 
     onDead() {
-        console.log('GAME OVER!');
+        this.setState({
+            isGameOver: true,
+        });
+    }
 
-        setTimeout(() => {
-            this.dropFood();
-            this.refs.snake.reset();
-        }, 3000);
+    handleStartButtonClick() {
+        this.setState({
+            isGameOver: false,
+        });
+
+        this.dropFood();
+        this.refs.snake.reset();
     }
 
     render() {
+        let gameOver;
+        let startButton;
+
+        if (this.state.isGameOver) {
+            startButton = (<StartButton onButtonClick={() => this.handleStartButtonClick()} />);
+            gameOver = (<GameOver />);
+        }
+
         return (
             <div ref="app" className="app" onKeyDown={e => this.handleKeyPress(e)} tabIndex="0">
                 <Playground ref="playground">
+                    {gameOver}
+                    {startButton}
                     <Snake
                         ref="snake"
                         onEat={() => this.onEat()}

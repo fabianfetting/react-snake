@@ -101,7 +101,7 @@ class Snake extends Component {
 
         if (this.isFoodPosition(newX, newY)) {
             tail = [{ x: newX, y: newY }, ...tail];
-            speed /= 1.1;
+            speed -= 10;
             this.props.onEat();
             timerId = this.refreshTimer(speed, timerId);
         }

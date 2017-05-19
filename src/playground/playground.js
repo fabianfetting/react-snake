@@ -8,10 +8,12 @@ class Playground extends Component {
             height: this.props.height,
         };
 
-        const childrenWithProps = React.Children.map(this.props.children, child =>
-            React.cloneElement(child, {
+        const childrenWithProps = React.Children.map(this.props.children, child => {
+            if (!child) { return; }
+            return React.cloneElement(child, {
                 scale: this.props.scale,
             })
+        }
         );
 
         return (

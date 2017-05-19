@@ -4,3 +4,27 @@
     width: 100%;
     background: #fffefd;
 }
+
+.game-over, .start-button {
+    color: #2d2d2d;
+    font-size: 30px;
+    font-family: monospace;
+    font-weight: bold;
+    z-index: 3;
+}
+
+.game-over {
+    position: relative;
+    top: 45%;
+    text-align: center;
+    width: 100%;
+}
+
+.start-button {
+    top: 60%;
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+    cursor: pointer;
+}
