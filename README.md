@@ -1,6 +1,6 @@
 # React Snake
 
-[>PLAY<](https://fur6y.github.io/react-snake/)
+[>PLAY<](https://fabianfetting.github.io/react-snake/)
 
 ## Screenshot
 
